@@ -10,17 +10,20 @@ import {
   HttpCode,
   // ParseIntPipe,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
+
+import { ProductsService } from './../services/products.service';
 
 import { ParseIntPipe } from '../../common/parse-int.pipe';
 import { CreateProductDto, UpdateProductDto } from '../dtos/products.dtos';
 
-import { ProductsService } from './../services/products.service';
-
+@ApiTags('products')
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get all products' })
   getProducts() {
     // return {
     //   message: `products limit=> ${limit} offset=> ${offset} brand=> ${brand}`,
