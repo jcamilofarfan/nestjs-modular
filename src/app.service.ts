@@ -9,10 +9,6 @@ export class AppService {
     @Inject(config.KEY) private configService: ConfigType<typeof config>,
   ) {}
   getHello(): string {
-    const apiKey = this.configService.apiKey;
-    const name = this.configService.database.name;
-    console.log(apiKey);
-    console.log(name);
     return `Hello World!`;
   }
 }
