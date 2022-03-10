@@ -38,6 +38,8 @@ client.connect();
           username: user,
           password,
           database,
+          synchronize: true,
+          autoLoadEntities: true,
         };
       },
     }),
