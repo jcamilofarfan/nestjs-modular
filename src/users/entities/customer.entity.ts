@@ -20,7 +20,7 @@ export class Customer {
   @Column({ type: 'varchar', length: 255 })
   lastName: string;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'varchar', length: 255 })
   phone: string;
 
   @CreateDateColumn({
