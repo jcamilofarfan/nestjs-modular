@@ -53,7 +53,42 @@ export class ProductsService {
       const brand = await this.branddRepo.findOne(changes.brandId);
       product.brand = brand;
     }
+    if (changes.categoriesIds) {
+      const categories = await this.categoryRepo.findByIds(
+        changes.categoriesIds,
+      );
+      product.categories = categories;
+    }
     this.productRepo.merge(product, changes);
+    return this.productRepo.save(product);
+  }
+
+  async removeCategoryByProduct(productId: number, categoryId: number) {
+    const product = await this.productRepo.findOne({
+      where: { id: productId },
+      relations: ['categories'],
+    });
+    product.categories = product.categories.filter(
+      (category) => category.id !== categoryId,
+    );
+    return this.productRepo.save(product);
+  }
+
+  async addCategoryByProduct(productId: number, categoryId: number) {
+    const product = await this.productRepo.findOne({
+      where: { id: productId },
+      relations: ['categories'],
+    });
+    const category = await this.categoryRepo.findOne(categoryId);
+    if (product.categories.find((c) => c.id === categoryId)) {
+      throw new NotFoundException(
+        `Category #${categoryId} already exists in product #${productId}`,
+      );
+    }
+    if (!category) {
+      throw new NotFoundException(`Category #${categoryId} not found`);
+    }
+    product.categories.push(category);
     return this.productRepo.save(product);
   }
 

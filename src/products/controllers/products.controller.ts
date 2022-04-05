@@ -32,13 +32,13 @@ export class ProductsController {
     return `yo soy un filter`;
   }
 
-  @Get(':productId')
+  @Get(':id')
   @HttpCode(HttpStatus.ACCEPTED)
-  getOne(@Param('productId', ParseIntPipe) productId: number) {
+  getOne(@Param('id', ParseIntPipe) id: number) {
     // response.status(200).send({
     //   message: `product ${productId}`,
     // });
-    return this.productsService.findOne(productId);
+    return this.productsService.findOne(id);
   }
 
   @Post()
@@ -51,12 +51,31 @@ export class ProductsController {
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() payload: UpdateProductDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() payload: UpdateProductDto,
+  ) {
     return this.productsService.update(id, payload);
   }
 
+  @Put(':id/category/:categoryId')
+  addCategory(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('categoryId', ParseIntPipe) categoryId: number,
+  ) {
+    return this.productsService.addCategoryByProduct(id, categoryId);
+  }
+
   @Delete(':id')
-  delete(@Param('id') id: number) {
+  delete(@Param('id', ParseIntPipe) id: number) {
     return this.productsService.remove(id);
+  }
+
+  @Delete(':id/category/:categoryId')
+  deleteCategory(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('categoryId', ParseIntPipe) categoryId: number,
+  ) {
+    return this.productsService.removeCategoryByProduct(id, categoryId);
   }
 }
