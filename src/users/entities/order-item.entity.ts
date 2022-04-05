@@ -1,29 +1,18 @@
+import { Product } from '../../products/entities/product.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  OneToOne,
-  OneToMany,
 } from 'typeorm';
 import { Order } from './order.entity';
 
-import { User } from './user.entity';
-
 @Entity()
-export class Customer {
+export class OrderItem {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ type: 'varchar', length: 255 })
-  name: string;
-
-  @Column({ type: 'varchar', length: 255 })
-  lastName: string;
-
-  @Column({ type: 'varchar', length: 255 })
-  phone: string;
 
   @CreateDateColumn({
     type: 'timestamptz',
@@ -37,9 +26,12 @@ export class Customer {
   })
   updatedAt: Date;
 
-  @OneToOne(() => User, (user) => user.customer, { nullable: true })
-  user: User;
+  @Column({ type: 'int' })
+  quantity: number;
 
-  @OneToMany(() => Order, (order) => order.customer)
-  orders: Order[];
+  @ManyToOne(() => Product)
+  product: Product; //es posible hacer la relacion bidireccional en Product.entity
+
+  @ManyToOne(() => Order, (order) => order.items)
+  order: Order;
 }
