@@ -21,7 +21,6 @@ export class OrdersService {
       where: { id },
       relations: ['customer', 'items', 'items.product'],
     });
-    console.log(order);
     if (!order) {
       throw new NotFoundException(`Order #${id} not found`);
     }
