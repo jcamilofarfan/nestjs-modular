@@ -22,6 +22,11 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Get('tasks')
+  getTasks() {
+    return this.usersService.getTasks();
+  }
+
   @Get(':id')
   get(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(id);
@@ -29,7 +34,7 @@ export class UsersController {
 
   @Get(':id/orders')
   getOrders(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.getOrdersbyUser(id);
+    return this.usersService.getOrderByUser(id);
   }
 
   @Post()
