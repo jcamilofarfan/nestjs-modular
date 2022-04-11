@@ -10,7 +10,7 @@ import {
 
 import { Customer } from './customer.entity';
 
-@Entity()
+@Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,18 +25,22 @@ export class User {
   role: string;
 
   @CreateDateColumn({
+    name: 'created_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
+    name: 'updated_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
 
   @OneToOne(() => Customer, (customer) => customer.user, { nullable: true })
-  @JoinColumn() //va solo en un lado si es bidireccional seria como la principal
+  @JoinColumn({
+    name: 'customer_id',
+  }) //va solo en un lado si es bidireccional seria como la principal
   customer: Customer;
 }

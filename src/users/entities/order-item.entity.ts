@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -15,12 +16,14 @@ export class OrderItem {
   id: number;
 
   @CreateDateColumn({
+    name: 'created_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
+    name: 'updated_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
@@ -30,8 +33,14 @@ export class OrderItem {
   quantity: number;
 
   @ManyToOne(() => Product)
-  product: Product; //es posible hacer la relacion bidireccional en Product.entity
+  @JoinColumn({
+    name: 'product_id',
+  })
+  product: Product; //es posible hacer la relacion bidireccional en Product.entity pero no se recomienda
 
   @ManyToOne(() => Order, (order) => order.items)
+  @JoinColumn({
+    name: 'order_id',
+  })
   order: Order;
 }

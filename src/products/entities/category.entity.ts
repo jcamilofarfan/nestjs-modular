@@ -9,7 +9,7 @@ import {
 
 import { Product } from './product.entity';
 
-@Entity()
+@Entity({ name: 'brands' })
 export class Category {
   @PrimaryGeneratedColumn()
   id: number;
@@ -18,12 +18,14 @@ export class Category {
   name: string;
 
   @CreateDateColumn({
+    name: 'created_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
+    name: 'updated_ at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
