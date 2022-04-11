@@ -1,22 +1,20 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { Repository } from 'typeorm';
 
 import { User } from '../entities/user.entity';
-import { Order } from '../entities/order.entity';
+// import { Order } from '../entities/order.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 
 import { ProductsService } from './../../products/services/products.service';
 import { CustomersService } from './customers.service';
-import { Client } from 'pg';
 
 @Injectable()
 export class UsersService {
   constructor(
     private productsService: ProductsService,
     private configService: ConfigService,
-    @Inject('PG_CLIENT') private clientPg: Client,
     @InjectRepository(User) private userRepo: Repository<User>,
     private customersService: CustomersService,
   ) {}
@@ -57,27 +55,7 @@ export class UsersService {
     return this.userRepo.delete(id);
   }
 
-  async getOrderByUser(id: number) {
-    const user = this.findOne(id);
-    return {
-      date: new Date(),
-      user,
-      products: await this.productsService.findAll(),
-    };
-  }
-
-  getTasks() {
-    return new Promise((resolve, reject) => {
-      this.clientPg.query('SELECT * from tasks', (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res.rows);
-      });
-    });
-  }
-
-  getOrdersbyUser(id: number): Order {
+  getOrdersbyUser(id: number) {
     const user = this.findOne(id);
     return {
       date: new Date(),
